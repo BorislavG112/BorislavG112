@@ -1,0 +1,26 @@
+using System;
+class Program
+{
+    static void Main() {
+        Console.Write("Give me text: ");
+        string word = Console.ReadLine();                       //Asking the user for text
+        Console.Write("Give me the code: ");                    
+        int codes = Convert.ToInt32(Console.ReadLine());        //Asking what is the shift
+        if (codes > 25)
+            codes = codes % 26;                                 //There are 26 letters in English Alphabet, so if the code for example is 26 there is no change
+        char[] ABC = new char []{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
+        int wordLong = word.Length;                             //The Lenght of the user's text is my end of the "while"
+        int FirstToLastIndex = 0;                               //giving a value of FirstToLastIndex (sure to go through every index)
+        char[] NewWord = new char[wordLong];                    //here we are creating our new word
+        while (wordLong > 0)                                    //Going to every index of the word
+        {
+            int SearchingLetter = Array.IndexOf(ABC, word[FirstToLastIndex]);     //Getting the position
+            char NewLetter = ABC[SearchingLetter + codes];                        //Shifting
+            NewWord[FirstToLastIndex] = NewLetter;                                //Adding the new letter
+            FirstToLastIndex++;
+            wordLong--;                                         //We don't want to make an endless loop
+        }
+        Console.WriteLine(String.Join("",NewWord));             //Our result
+        Console.ReadLine();                                     //To see the result
+    }
+}
