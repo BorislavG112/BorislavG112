@@ -1,0 +1,27 @@
+using System;
+namespace ConsoleApp2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Give me the random text ");
+            string word = Console.ReadLine();
+            char[] ABC = new char [] {'Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A', 'Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A','z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a','z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
+            int codes1 = 0;
+            int wordLong = word.Length;
+            char[] NewWord = new char[wordLong];
+            while (codes1 < 26)
+            {
+                for (int i=0;i<wordLong; i++)                
+                {
+                    int SearchingLetter = Array.IndexOf(ABC, word[i]);
+                    char NewLetter = ABC[SearchingLetter + codes1];
+                    NewWord[i] = NewLetter;
+                }
+            Console.WriteLine(String.Join("", NewWord));
+            codes1++;
+            }
+        }
+    }
+}
