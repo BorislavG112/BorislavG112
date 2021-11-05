@@ -1,0 +1,82 @@
+using System;
+using System.Net.Http;
+
+public class Program
+{
+	static void Main(string[] args)
+	{
+		try
+		{
+			Console.WriteLine("Welcome to my transposition cipher test program.");
+			Console.WriteLine("How many tests do you want? No need to choose more than 100, you will just wait longer.)"); int tests = Convert.ToInt32(Console.ReadLine());
+			int NumberOfTest = 0;  //Keep track of which test has taken place
+			while (tests > 0)      //It can also be done with for
+			{
+				HttpClient client = new HttpClient();
+				string randomtext = client.GetStringAsync("http://metaphorpsum.com/sentences/10").Result;      //Getting random paragraph from the site
+				Random rnd = new Random();
+				int key = rnd.Next(Convert.ToInt32(randomtext.Length * 0.1), Convert.ToInt32(randomtext.Length * 0.5));   //Get random key between 10% to 50% of the length of the text because this is required by my conditions, but can be changed to be between 1 and the number of letters in the text.
+				//Console.WriteLine(randomtext);     //If you want to see the random text
+			  //Console.WriteLine(key);            //If you want to see the random key
+				int Indexes = randomtext.Length;
+				//Console.WriteLine(Indexes);            //If you want to see how many characters there are in the random text
+				tests--;                                 //Closing the loop
+				string EncryptionText = Encryption(key, randomtext);  //Getting encryption - my encryption works by adding spaces so that the number of characters can be divided by the key (this way my decryption works faster)
+				//Console.WriteLine(EncryptionText);                   //If you want to see the encryption
+				if (randomtext == Decryption(key, EncryptionText, Indexes))     //Compare the originally created text with the one that is encrypted and then decrypted.
+				{
+					Console.WriteLine("Test number " + ++NumberOfTest + " is okay.");           //It goes through each test and says if the result matches.
+                }
+                else
+                {
+					Console.WriteLine("Test number " + ++NumberOfTest + " is NOT okay.");
+				}
+			}
+		}
+		catch  //I don't want my program to crash.
+		{
+			Console.WriteLine("Error, Hey, don't try to test my program!");
+        }
+	}
+	static string Encryption(int key, string word)
+	{
+		int key1 = key;
+		while (word.Length % key != 0)
+		{
+			word = word.Insert(word.Length, " ");       //Adds more characters so that it can be divided by the key
+		}
+		key = word.Length / key; int WordLengthDivKey = word.Length / key1, key2 = key1, index1 = 0, i = 0, r = 0; char[] EncWord = new char[word.Length];
+		while (WordLengthDivKey >= 0)
+		{
+			while (key2 > 0)
+			{
+				EncWord[r] = word[index1 + (key * i)];
+				i++; key2--; r++;                          //Encryption takes the text, divides it into groups, and then takes the first character from each group, then the second, and so on until each group is left without characters.
+			}                                            //For example, if 123456 is entered with key 2, there are 3 groups - 12, 34 and 56. And then from each group takes the first character and then the second.
+			index1++; WordLengthDivKey--; i = 0;	    
+			if (r < word.Length)
+			{
+				key2 = key1;
+			}
+		}
+		return String.Join("", EncWord);                 //Getting the encryption
+	}
+static string Decryption(int key, string word, int Indexes)
+	{
+		char[] decword = new char[word.Length]; int i = 0, k = 0, WordLengthDivKey = word.Length, x = word.Length / key, r = 0;
+		while (WordLengthDivKey > 0)
+		{
+			while (x > 0)
+			{
+				decword[r] = word[k + (key * i)];               //Decryption works in a similar way to encryption. Therefore, it was important to divide the encrypted message by the key and to get a whole number so that decryption could create similar groups and go through each of them.
+				i++; x--; r++;                                  //For example, 159260371482 with key 3 is divided into four groups - 159, 260, 371, 482 and successively passes through each group to form 123456789012.
+			}
+			k++; WordLengthDivKey--; i = 0;
+			if (r < word.Length)
+				x = word.Length / key;
+		}
+		string result = String.Join("", decword);                             //Getting the dycryption
+		result = result.Remove(result.Length - (result.Length - Indexes));    //The last symbols of the dycryption are the characters added before. And to get the original text without the empty spaces added at the end, I remove them.
+		return result;
+	}
+}
