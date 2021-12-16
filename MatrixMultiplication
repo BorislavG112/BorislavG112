@@ -1,0 +1,130 @@
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		//C
+		/*Random rd = new Random();
+		int N1 = rd.Next(1,200);
+		int N2 = rd.Next(1,200);
+		int N3 = rd.Next(1,200);
+		Console.WriteLine(N1);
+		Console.WriteLine(N2);
+		Console.WriteLine(N3);
+		int[,] arr1 = new int [N1,N2];
+		int[,] arr2 = new int [N2,N3];
+		int[,] arr3 = new int [N1,N3];
+		int P1 = (arr1[0,0]+arr1[1,1])*(arr2[0,0] + arr2[1,1]);
+		int P2 = (arr1[1,0]+arr1[1,1])*arr2[0,0];
+		int P3 = arr1[0,0]*(arr2[0,1] - arr2[1,1]);
+		int P4 = arr1[1,1]*(arr2[1,0] + arr2[0,0]);
+		int P5 = (arr1[0,0]+arr1[0,1])*arr2[1,1];
+		int P6 = (arr1[1,0]-arr1[0,0])*(arr2[0,0] + arr2[0,1]);
+		int P7 = (arr1[0,1]-arr1[1,1])*(arr2[1,0] + arr2[1,1]);
+		*/
+		/*int a1=1, a2=2, a3=3, a4=4, 
+		b1=5, b2=6, b3=7, b4=8;
+		int[,] arr1 = new int [2,2] {{a1,a2},{a3,a4}};
+		int[,] arr2 = new int [2,2] {{b1,b2},{b3,b4}};
+		int[,] arr3 = new int [2,2];
+		//A)
+		for(int i =0; i<2;i++)
+		{
+			for(int l=0;l<2;l++)
+			{
+				arr3[i,l] = (arr1[i, 0]*arr2[0, l]) + (arr1[i, 1]*arr2[1, l]);
+			}
+		}
+		for (int t = 0; t < arr3.GetLength(0); t++)
+        {
+            for (int j = 0; j < arr3.GetLength(1); j++) {
+                Console.Write("| {0} |", arr3[t, j]);
+            }
+            Console.WriteLine();
+        }
+		Console.WriteLine();*/
+		//B)
+		/*
+		P       A     B         A     B
+        P1 = A11*B11 + A11*B22 + A22*B11 + A22*B22
+		P2 = A21*B11 + A22*B11
+		P3 = A11*B12 - A11*B22
+		P4 = A22*B21 - A22*B11
+		P5 = A11*B22 + A12*B22
+		P6 = A21*B11 + A21*B12 - A11*B11 - A11*B12
+		P7 = A12*B21 + A12*B22 - A22*B21 - A22*B22
+
+		C11 = A11*B11 + A12*B21    00*00 + 01*10
+		C12 = A11*B12 + A12*B22	   00*01 + 01*11
+		C21 = A21*B11 + A22*B21    10*00 + 11*10
+		C22 = A22*B22 + A21*B12    11*11 + 10*01
+		*/
+		/*for(int i1 =0; i1<2;i1++)
+		{
+			for(int l1=0;l1<2;l1++)
+			{
+				arr3[i1,l1] = (arr1[i1, l1*i1]*arr2[i1*l1, l1]) + (arr1[i1, 1-l1*i1]*arr2[1-l1*i1, l1]);
+			}
+		}
+		for (int t1 = 0; t1 < arr3.GetLength(0); t1++)
+        {
+            for (int j = 0; j < arr3.GetLength(1); j++) {
+                Console.Write("| {0} |", arr3[t1, j]);
+            }
+            Console.WriteLine();
+        }*/
+		//C)
+		/*
+		int row = Convert.ToInt32(Console.ReadLine());
+		int column = Convert.ToInt32(Console.ReadLine());
+		int row1 = Convert.ToInt32(Console.ReadLine());
+		int column1 = Convert.ToInt32(Console.ReadLine());
+		int[,] arr1 = new int[row, column];
+		int[,] arr2 = new int[row1, column1];
+		int[,] arr3 = new int[row1, column1];
+		int q = 0;
+		for (int i2 = 0; i2 < row; i2++)
+		{
+			for (int i3 = 0; i3 < column; i3++, q++)
+			{
+				arr1[i2, i3] = q;
+				arr2[i2, i3] = q;
+				arr3[i2, i3] = q + q;
+			}
+		}
+		for (int t1 = 0; t1 < arr3.GetLength(0); t1++)
+		{
+			for (int j = 0; j < arr3.GetLength(1); j++)
+			{
+				Console.Write("| {0} |", arr3[t1, j]);
+			}
+			Console.WriteLine();
+		}*/
+/*		int row = Convert.ToInt32(Console.ReadLine());
+		int column = Convert.ToInt32(Console.ReadLine());
+		int row1 = Convert.ToInt32(Console.ReadLine());
+		int column1 = Convert.ToInt32(Console.ReadLine());
+		int[,] arr1 = new int[row, column];
+		int[,] arr2 = new int[row1, column1];
+		int[,] arr3 = new int[row1, column1];
+		int q = 0;
+		for (int i2 = 0; i2 < row; i2++)
+		{
+			for (int i3 = 0; i3 < column; i3++, q++)
+			{
+				arr1[i2, i3] = q;
+				arr2[i2, i3] = q;
+				arr3[i2, i3] = q*q;
+			}
+		}
+		for (int t1 = 0; t1 < arr3.GetLength(0); t1++)
+		{
+			for (int j = 0; j < arr3.GetLength(1); j++)
+			{
+				Console.Write("| {0} |", arr3[t1, j]);
+			}
+			Console.WriteLine();
+		}*/	
+	}
+}
