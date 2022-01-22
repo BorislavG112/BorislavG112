@@ -1,0 +1,148 @@
+using System;
+public class Program
+{
+	public static void Main()
+	{
+		static int GCD(int a, int b)
+		{
+			int Remainder;
+			while (b != 0)
+			{
+				Remainder = a % b;
+				a = b;
+				b = Remainder;
+			}
+			return a;
+		}
+
+		Console.WriteLine("What do you want to do:\n 1-encryption\n 2-decryption\n 3-Brute Force");
+		int choose = Convert.ToInt32(Console.ReadLine());
+
+		if (choose == 1)
+		{
+			Console.WriteLine("Give me text: ");
+			string text = Console.ReadLine();
+			text = text.ToLower();
+			Console.WriteLine("Give me key: ");
+			int key = Convert.ToInt32(Console.ReadLine());
+			int keya = key / text.Length;
+			int keyb = key % text.Length;
+			while (GCD(keya, 26) != 1)
+			{
+				Console.WriteLine("Key A is not coprime with 26, give me another key:");
+				key = Convert.ToInt32(Console.ReadLine());
+				keya = key / text.Length;
+				keyb = key % text.Length;
+			}
+			Console.WriteLine(encrypt(text, keya, keyb));
+		}
+
+		if (choose == 2)
+		{
+			Console.WriteLine("Give me text: ");
+			string text = Console.ReadLine();
+			text = text.ToLower();
+			Console.WriteLine("Give me key: ");
+			int key = Convert.ToInt32(Console.ReadLine());
+			int keya = key / text.Length;
+			int keyb = key % text.Length;
+			while (GCD(keya, 26) != 1)
+			{
+				Console.WriteLine("Key A is not coprime with 26, give me another key:");
+				key = Convert.ToInt32(Console.ReadLine());
+				keya = key / text.Length;
+				keyb = key % text.Length;
+			}
+			Console.WriteLine(decrypt(text, keya, keyb));
+		}
+
+		if (choose == 3)
+		{
+			Console.WriteLine("The Brute Force for now is working only with single words. Give me your word:");
+			string text = Console.ReadLine();
+			BruteForce(text);
+		}
+
+		static string decrypt(string text, int keya, int keyb)
+		{
+			string decryptedt = "";
+			char[] delimiterChars2 = { ' ', ',', '.', ':', '\t', '!', '#', '$', '%', '*', '(', ')', '!', '?', '/', '+' };
+			string[] words = decryptedt.Split(delimiterChars2);
+			foreach (int c in text)
+			{
+				int decryptedc = Convert.ToChar(c) - Convert.ToChar("a");
+				decryptedc = decryptedc - keyb;
+				while (decryptedc % keya != 0)
+				{
+					decryptedc += 26;
+				}
+				decryptedc = (int)decryptedc / (int)keya;
+				decryptedc = decryptedc + Convert.ToChar("a");
+				decryptedt += Convert.ToChar(decryptedc);
+			}
+			return decryptedt;
+		}
+
+		static string encrypt(string text, int keya, int keyb)
+		{
+			string encryptedt = "";
+			char[] delimiterChars2 = { ' ', ',', '.', ':', '\t', '!', '#', '$', '%', '*', '(', ')', '!', '?', '/', '+' };
+			string[] words = encryptedt.Split(delimiterChars2);
+			foreach (int c in text)
+			{
+				int encryptedc = Convert.ToChar(c) - Convert.ToChar("a");
+				encryptedc = encryptedc * keya;
+				encryptedc = encryptedc + keyb;
+				encryptedc = encryptedc % 26;
+				encryptedt += Convert.ToChar(encryptedc + Convert.ToChar("a"));
+			}
+			return encryptedt;
+		}
+
+		static void BruteForce(string text)
+		{
+			string text2 = "";
+			for (int i = 0; i < 120; i++)
+			{
+				text2 = text;
+				int key = i;
+				int keya = key / text2.Length;
+				int keyb = key % text2.Length;
+				if (GCD(keya, 26) == 1)
+				{
+					text2 = decrypt(text, keya, keyb);
+					text2 = text2.ToLower();
+					string fileName = "en-US.dic";
+					string DicPath = Path.Combine(Environment.CurrentDirectory, fileName);
+					using (StreamReader sr = File.OpenText(DicPath))
+					{
+						string[] lines = File.ReadAllLines(DicPath);
+						bool isMatch = false;
+						char[] delimiterChars = { ' ', ',', '.', ':', '\t', '!', '#', '$', '%', '*', '(', ')', '!', '?', '/', '+' };
+						string[] words = text2.Split(delimiterChars);
+
+						foreach (var word in words)
+						{
+							for (int x = 0; x < lines.Length - 1; x++)
+							{
+								if (lines[x].Split('/').Contains(word))
+								{
+									sr.Close();
+									//Console.WriteLine("There is a match");
+									Console.WriteLine(word);
+									isMatch = true;
+									break;
+								}
+							}
+							/*        if (!isMatch)
+									{
+										sr.Close();
+										Console.WriteLine("There is no match");
+									}*/
+						}
+					}
+				}
+			}
+		}
+	}
+}
