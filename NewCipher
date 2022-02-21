@@ -1,0 +1,77 @@
+using System;
+using System.Linq;
+using System.Security.Cryptography;
+
+public class Program
+{
+    public static void Main()
+    {
+        char[] arr = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+        string massage = "In my role as Wikileaks editor, I've been involved in fighting off many legal attacks. To do that, and keep our sources safe, we have had to spread assets, encrypt everything, and move telecommunications and people around the world to activate protective laws in different national jurisdictions. -- Julian Assange, editor-in-chief of Wikileaks";
+        massage = massage.ToLower();
+        char[] GenerateRandomKey = generateRandomKey(arr);
+        string EncryptedMessage = encryptMessage(GenerateRandomKey, massage, arr);
+        string DecryptMessage = decryptMessage(GenerateRandomKey, EncryptedMessage, arr);
+        /*        Console.WriteLine(GenerateRandomKey);
+                Console.WriteLine(EncryptedMessage);
+                Console.WriteLine(DecryptMessage);*/
+        bool mode = true;
+        string TranslateMassage = translateMassage(EncryptedMessage, DecryptMessage, mode);
+        //Console.WriteLine(TranslateMassage);
+    }
+    public static char[] generateRandomKey(char[] arr)
+    {
+        Random random = new Random();
+        char[] GenerateRandomKey = arr.OrderBy(x => random.Next()).ToArray();
+        return GenerateRandomKey;
+    }
+
+    public static string encryptMessage(char[] GenerateRandomKey, string massage, char[] arr)
+    {
+        string EncryptedMessage = "";
+        for(int i = 0; i < massage.Length; i++)
+        {
+            if (arr.Contains(massage[i]))
+            {
+                int index = Array.IndexOf(arr, massage[i]);
+                EncryptedMessage = EncryptedMessage+GenerateRandomKey[index];
+            }
+            else
+            {
+                EncryptedMessage = EncryptedMessage + massage[i];
+            }
+        }
+        return EncryptedMessage;
+    }
+
+    public static string decryptMessage(char[] GenerateRandomKey, string EncryptedMessage, char[] arr)
+    {
+        string DecryptMessage = "";
+        for (int i = 0; i < EncryptedMessage.Length; i++)
+        {
+            if (arr.Contains(EncryptedMessage[i]))
+            {
+                int index = Array.IndexOf(GenerateRandomKey, EncryptedMessage[i]);
+                DecryptMessage = DecryptMessage + arr[index];
+            }
+            else
+            {
+                DecryptMessage = DecryptMessage + EncryptedMessage[i];
+            }
+        }
+        return DecryptMessage;
+    }
+    public static string translateMassage(string EncryptedMessage, string DecryptMessage, bool mode)
+    {
+        string TranslateMassage;
+        if (mode)
+        {
+            TranslateMassage = EncryptedMessage;
+        }
+        else
+        {
+            TranslateMassage = DecryptMessage;
+        }
+        return TranslateMassage;
+    }
+}
