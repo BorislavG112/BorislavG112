@@ -1,0 +1,199 @@
+using System;
+using System.Linq;
+using System.Security.Cryptography;
+
+public class Program
+{
+    public static void Main()
+    {
+        char[] arr = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+        //string message = "hello In my role as Wikileaks editor, I've been involved in fighting off many legal attacks. To do that, and keep our sources safe, we have had to spread assets, encrypt everything, and move telecommunications and people around the world to activate protective laws in different national jurisdictions. --Julian Assange, editor-in-chief of Wikileaks";
+        //Test message
+        string message = "hello In my role as";
+        message.ToLower();
+        //generateRandomKeygenerateRandomKey
+        //      char[] GenerateRandomKey = generateRandomKey(arr);
+        //encryptMessage
+        //      string EncryptedMessage = encryptMessage(GenerateRandomKey, message, arr);
+        //decryptMessage
+        //      string DecryptMessage = decryptMessage(GenerateRandomKey, EncryptedMessage, arr);
+
+        //Testing
+/*              Console.WriteLine(GenerateRandomKey);
+                Console.WriteLine(EncryptedMessage);
+                Console.WriteLine(DecryptMessage);
+                bool mode = true;
+                string TranslateMessage = translateMessage(EncryptedMessage, DecryptMessage, mode);
+                Console.WriteLine(TranslateMessage);
+                BruteForce(EncryptedMessage, arr);
+                Console.WriteLine(ChangingDictInNumbers());*/
+
+        //BruteForce
+        /*        string DecryptMessageWithoutSpecialCharacters = RemoveSpecialChars(message);
+                string ChangingMessageInNumbers1 = ChangingMessageInNumbers(DecryptMessageWithoutSpecialCharacters);
+                string[] ArrNumOfTextDic = ChangingDictInNumbers();
+                BruteForce(DecryptMessageWithoutSpecialCharacters, ArrNumOfTextDic, ChangingMessageInNumbers1);*/
+    }
+    public static char[] generateRandomKey(char[] arr)
+    {
+        Random random = new Random();
+        char[] GenerateRandomKey = arr.OrderBy(x => random.Next()).ToArray();
+        return GenerateRandomKey;
+    }
+
+    public static string encryptMessage(char[] GenerateRandomKey, string message, char[] arr)
+    {
+        string EncryptedMessage = "";
+        for (int i = 0; i < message.Length; i++)
+        {
+            if (arr.Contains(message[i]))
+            {
+                int index = Array.IndexOf(arr, message[i]);
+                EncryptedMessage = EncryptedMessage + GenerateRandomKey[index];
+            }
+            else
+            {
+                EncryptedMessage = EncryptedMessage + message[i];
+            }
+        }
+        return EncryptedMessage;
+    }
+
+    public static string decryptMessage(char[] GenerateRandomKey, string EncryptedMessage, char[] arr)
+    {
+        string DecryptMessage = "";
+        for (int i = 0; i < EncryptedMessage.Length; i++)
+        {
+            if (arr.Contains(EncryptedMessage[i]))
+            {
+                int index = Array.IndexOf(GenerateRandomKey, EncryptedMessage[i]);
+                DecryptMessage = DecryptMessage + arr[index];
+            }
+            else
+            {
+                DecryptMessage = DecryptMessage + EncryptedMessage[i];
+            }
+        }
+        return DecryptMessage;
+    }
+    public static string translateMessage(string EncryptedMessage, string DecryptMessage, bool mode)
+    {
+        string TranslateMessage;
+        if (mode)
+        {
+            TranslateMessage = EncryptedMessage;
+        }
+        else
+        {
+            TranslateMessage = DecryptMessage;
+        }
+        return TranslateMessage;
+    }
+    /* >> Still in process - It is another idea to bruteForce, so we can call it BruteForce2.0
+
+     * public static string BruteForce2.0(string EncryptedMessage, char[] arr)
+        {
+            for(int i=0;i<26;i++) 
+            {
+                if (arr.Contains(EncryptedMessage[i])
+                    {
+                    char A = EncryptedMessage[i];
+                    int NumberOfLetters = EncryptedMessage.Count(f => (f == A));
+                    int[] NumberOfLetters2 = new int[EncryptedMessage.Length];
+                    NumberOfLetters2[i] = NumberOfLetters;
+                    str = str.Filter(A);
+                }
+                else
+                {
+
+                }
+
+            }
+        }*/
+    public static string[] ChangingDictInNumbers()
+    {
+        //var countQuery = new Dictionary<string, string>();
+        string fileName = "dictionary.txt";
+        string DicPath = Path.Combine(Environment.CurrentDirectory, fileName);
+        using (StreamReader sr = File.OpenText(DicPath))
+        {
+            string[] lines = File.ReadAllLines(DicPath);
+            string NumbersOfText = "";
+            foreach (var word in lines)
+            {
+                word.ToLower();
+                for (int j = 0; j < word.Length; j++)
+                {
+                    int Index2 = word.IndexOf(word[j]);
+                    NumbersOfText = NumbersOfText + Index2;
+                }
+                NumbersOfText = NumbersOfText + " ";
+            }
+            string[] ArrNumOfTextDic = NumbersOfText.Split(' ');
+            return ArrNumOfTextDic;
+        }
+    }
+    public static string RemoveSpecialChars(string str)
+    {
+        string[] chars = new string[] { ",", ".", "/", "!", "@", "#", "$", "%", "^", "&", "*", "'", "\"", ";", "_", "(", ")", ":", "|", "[", "]", "--","-" };
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (str.Contains(chars[i]))
+            {
+                str = str.Replace(chars[i], "");
+            }
+        }
+        return str;
+    }
+    public static string ChangingMessageInNumbers(string message)
+    {
+        string NumbersOfText="";
+        string[] words = message.Split(' ');
+        foreach (var word in words)
+            {
+                for (int j = 0; j < word.Length; j++)
+                {
+                    int Index2 = word.IndexOf(word[j]);
+                    NumbersOfText = NumbersOfText + Index2;
+                }
+            NumbersOfText = NumbersOfText + " ";
+            }
+        NumbersOfText = NumbersOfText.Remove(NumbersOfText.Length - 1);
+        return NumbersOfText;
+    }
+    static void BruteForce(string DecryptMessageWithoutSpecialCharacters, string[] ArrNumOfTextDic, string ChangingMessageInNumbers1)
+    {
+        //var countQuery = new Dictionary<string, string>();
+        string fileName = "dictionary.txt";
+        string DicPath = Path.Combine(Environment.CurrentDirectory, fileName);
+        using (StreamReader sr = File.OpenText(DicPath))
+        {
+            string[] lines = File.ReadAllLines(DicPath);
+            string[] wordsInNum = ChangingMessageInNumbers1.Split(' ');
+            string[] wordsInLet = DecryptMessageWithoutSpecialCharacters.Split(' ');
+            foreach (var word in wordsInNum)
+            {
+                string GettingPossibleWords = "";
+                if (ArrNumOfTextDic.Contains(word))
+                {
+                    for (int i = 0; i < ArrNumOfTextDic.Length; i++)
+                    {
+                        if (ArrNumOfTextDic[i] == word)
+                        {
+                            GettingPossibleWords = GettingPossibleWords + " " + lines[i] + ",";
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    Console.WriteLine("The matches for '" + wordsInLet[Array.IndexOf(wordsInNum, word)] + "' are" + GettingPossibleWords);
+                }
+                else
+                {
+                    Console.WriteLine("There is no match for the word '" + wordsInLet[Array.IndexOf(wordsInNum,word)] + "'. This means that the dic is incomplete, sorry.");
+                }
+            }
+        }
+    }
+}
